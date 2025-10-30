@@ -121,88 +121,69 @@ const JsonTreeVisualizer = () => {
   };
 
 
-  // const onClickGenerateTree = () => {
-  //   if (!jsonInput.trim()) {
-  //     Swal.fire({
-  //       icon: "warning",
-  //       title: "No JSON entered!",
-  //       text: "Please enter valid JSON data before generating the tree.",
-  //     });
-  //     return;
-  //   }
-
-  //   try {
-  //     const parsed = JSON.parse(jsonInput);
-  //     const rootKey = Object.keys(parsed)[0];
-  //     const { nodes, edges } = buildTree(parsed[rootKey], null, 0, rootKey);
-  //     setNodes(nodes);
-  //     setEdges(edges);
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "Tree generated successfully!",
-  //       timer: 1500,
-  //       showConfirmButton: false,
-  //     });
-  //   } catch (err) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Invalid JSON!",
-  //       text: "Please check your JSON syntax and try again.",
-  //     });
-  //   }
-  // };
-
 
   const onClickGenerateTree = () => {
-  if (!jsonInput.trim()) {
-    Swal.fire({
-      icon: "warning",
-      title: "No JSON entered!",
-      text: "Please enter valid JSON data before generating the tree.",
-    });
-    return;
-  }
-
-  try {
-    const parsed = JSON.parse(jsonInput);
-
-    // Build full tree (not just first key)
-    const { nodes, edges } = buildTree(parsed, null, 0, "root", 0, 0);
-
-    setNodes(nodes);
-    setEdges(edges);
-    Swal.fire({
-      icon: "success",
-      title: "Tree generated successfully!",
-      timer: 1500,
-      showConfirmButton: false,
-    });
-  } catch (err) {
-    Swal.fire({
-      icon: "error",
-      title: "Invalid JSON!",
-      text: "Please check your JSON syntax and try again.",
-    });
-  }
-};
-
-  const onClickResetTree = () => {
-    if (!jsonInput.trim() && nodes.length === 0) {
+    if (!jsonInput.trim()) {
       Swal.fire({
-        icon: "info",
-        title: "Nothing to reset!",
+        icon: "warning",
+        title: "No JSON entered!",
+        text: "Please enter valid JSON data before generating the tree.",
       });
       return;
     }
 
-    setJsonInput("");
-    setNodes([]);
-    setEdges([]);
-    Swal.fire({
-      icon: "success",
-      title: "Tree reset successfully!",
-    });
+    try {
+      const parsed = JSON.parse(jsonInput);
+
+      const { nodes, edges } = buildTree(parsed, null, 0, "root", 0, 0);
+
+      setNodes(nodes);
+      setEdges(edges);
+      Swal.fire({
+        icon: "success",
+        title: "Tree generated successfully!",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid JSON!",
+        text: "Please check your JSON syntax and try again.",
+      });
+    }
   };
+
+const onClickResetTree = () => {
+  if (!jsonInput.trim() && nodes.length === 0) {
+    Swal.fire({
+      icon: "info",
+      title: "Nothing to reset!",
+      text: "Please enter JSON and generate a tree first.",
+    });
+    return;
+  }
+
+  if (jsonInput.trim() && nodes.length === 0) {
+    Swal.fire({
+      icon: "info",
+      title: "No tree to reset",
+      text: "Please generate the tree before resetting.",
+    });
+    return;
+  }
+
+  setJsonInput("");
+  setNodes([]);
+  setEdges([]);
+
+  Swal.fire({
+    icon: "success",
+    title: "Tree reset successfully!",
+    timer: 1500,
+    showConfirmButton: false,
+  });
+};
 
 
   const handleSearch = () => {
